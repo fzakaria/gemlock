@@ -58,8 +58,7 @@ let
   chosenByName = mapAttrs choose byName;
 
   inGroups =
-    name:
-    groups == null || builtins.any (g: elem g groups) (gemGroups.${name} or [ "default" ]);
+    name: groups == null || builtins.any (g: elem g groups) (gemGroups.${name} or [ "default" ]);
 
   # A root with no spec at all is one Bundler left out of the lock on
   # purpose: `gem "tzinfo-data", platforms: [:windows]` on a lock with no

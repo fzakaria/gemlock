@@ -21,10 +21,12 @@ let
   rails = parseLockfile (readFile ../examples/rails/Gemfile.lock);
   railsGroups = parseGemfileGroups (readFile ../examples/rails/Gemfile);
 
-  on = local: resolve {
-    lock = basic;
-    local = parse local;
-  };
+  on =
+    local:
+    resolve {
+      lock = basic;
+      local = parse local;
+    };
   linux = on "x86_64-linux";
   darwin = on "arm64-darwin23";
   musl = on "aarch64-linux-musl";
@@ -73,7 +75,9 @@ summarize [
   (assertEq "rails: everything" 121 (length (attrNames railsAll.gems)))
   (assertTrue "rails prod: no capybara" (!hasAttr "capybara" railsProd.gems))
   (assertTrue "rails prod: no debug" (!hasAttr "debug" railsProd.gems))
-  (assertTrue "rails prod: rails and puma" (hasAttr "rails" railsProd.gems && hasAttr "puma" railsProd.gems))
+  (assertTrue "rails prod: rails and puma" (
+    hasAttr "rails" railsProd.gems && hasAttr "puma" railsProd.gems
+  ))
   (assertEq "rails prod: sqlite3 precompiled" "x86_64-linux-gnu" railsProd.gems.sqlite3.platform)
   (assertTrue "rails prod: fewer gems" (length (attrNames railsProd.gems) < 121))
 ]

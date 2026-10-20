@@ -18,5 +18,10 @@ rec {
   assertTrue = name: cond: if cond then true else throw "${name}: expected true";
 
   # Force a list of assertions and report how many held.
-  summarize = checks: assert all (c: c) checks; { passed = length checks; };
+  summarize =
+    checks:
+    assert all (c: c) checks;
+    {
+      passed = length checks;
+    };
 }

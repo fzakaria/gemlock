@@ -37,43 +37,100 @@ let
       try = re: match re tok;
     in
     if try "aix([0-9]+)?" != null then
-      [ "aix" (capture 0 (try "aix([0-9]+)?")) ]
+      [
+        "aix"
+        (capture 0 (try "aix([0-9]+)?"))
+      ]
     else if try ".*cygwin.*" != null then
-      [ "cygwin" null ]
+      [
+        "cygwin"
+        null
+      ]
     else if try "darwin([0-9]+)?" != null then
-      [ "darwin" (capture 0 (try "darwin([0-9]+)?")) ]
+      [
+        "darwin"
+        (capture 0 (try "darwin([0-9]+)?"))
+      ]
     else if tok == "macruby" then
-      [ "macruby" null ]
+      [
+        "macruby"
+        null
+      ]
     else if try "freebsd([0-9]+)?" != null then
-      [ "freebsd" (capture 0 (try "freebsd([0-9]+)?")) ]
+      [
+        "freebsd"
+        (capture 0 (try "freebsd([0-9]+)?"))
+      ]
     else if tok == "java" || tok == "jruby" then
-      [ "java" null ]
+      [
+        "java"
+        null
+      ]
     else if try "java([0-9.]*)" != null then
-      [ "java" (capture 0 (try "java([0-9.]*)")) ]
+      [
+        "java"
+        (capture 0 (try "java([0-9.]*)"))
+      ]
     else if try "dalvik([0-9]+)?" != null then
-      [ "dalvik" (capture 0 (try "dalvik([0-9]+)?")) ]
+      [
+        "dalvik"
+        (capture 0 (try "dalvik([0-9]+)?"))
+      ]
     else if tok == "dotnet" then
-      [ "dotnet" null ]
+      [
+        "dotnet"
+        null
+      ]
     else if try "dotnet([0-9.]*)" != null then
-      [ "dotnet" (capture 0 (try "dotnet([0-9.]*)")) ]
+      [
+        "dotnet"
+        (capture 0 (try "dotnet([0-9.]*)"))
+      ]
     else if try "linux-?([A-Za-z0-9_]+)?" != null then
-      [ "linux" (capture 0 (try "linux-?([A-Za-z0-9_]+)?")) ]
+      [
+        "linux"
+        (capture 0 (try "linux-?([A-Za-z0-9_]+)?"))
+      ]
     else if try ".*mingw32.*" != null then
-      [ "mingw32" null ]
+      [
+        "mingw32"
+        null
+      ]
     else if try "mingw-?([A-Za-z0-9_]+)?" != null then
-      [ "mingw" (capture 0 (try "mingw-?([A-Za-z0-9_]+)?")) ]
+      [
+        "mingw"
+        (capture 0 (try "mingw-?([A-Za-z0-9_]+)?"))
+      ]
     else if try "(mswin[0-9]+)(_([0-9]+))?" != null then
-      [ (capture 0 (try "(mswin[0-9]+)(_([0-9]+))?")) (capture 2 (try "(mswin[0-9]+)(_([0-9]+))?")) ]
+      [
+        (capture 0 (try "(mswin[0-9]+)(_([0-9]+))?"))
+        (capture 2 (try "(mswin[0-9]+)(_([0-9]+))?"))
+      ]
     else if try ".*netbsdelf.*" != null then
-      [ "netbsdelf" null ]
+      [
+        "netbsdelf"
+        null
+      ]
     else if try "openbsd([0-9]+\\.[0-9]+)?" != null then
-      [ "openbsd" (capture 0 (try "openbsd([0-9]+\\.[0-9]+)?")) ]
+      [
+        "openbsd"
+        (capture 0 (try "openbsd([0-9]+\\.[0-9]+)?"))
+      ]
     else if try "solaris([0-9]+\\.[0-9]+)?" != null then
-      [ "solaris" (capture 0 (try "solaris([0-9]+\\.[0-9]+)?")) ]
+      [
+        "solaris"
+        (capture 0 (try "solaris([0-9]+\\.[0-9]+)?"))
+      ]
     else if try ".*wasi.*" != null then
-      [ "wasi" null ]
+      [
+        "wasi"
+        null
+      ]
     else
-      [ "unknown" null ];
+      [
+        "unknown"
+        null
+      ];
 
   parse =
     str:
@@ -177,22 +234,26 @@ let
         -1
       else
         (if s.os == o.os then 0 else 1)
-        + 10 * (
-          if s.cpu == o.cpu || (s.cpu == "arm" && hasPrefix "arm" o.cpu) then
-            0
-          else if s.cpu == null || s.cpu == "universal" then
-            1
-          else
-            2
-        )
-        + 100 * (
-          if s.version == o.version then
-            0
-          else if s.version == null then
-            1
-          else
-            2
-        );
+        +
+          10
+          * (
+            if s.cpu == o.cpu || (s.cpu == "arm" && hasPrefix "arm" o.cpu) then
+              0
+            else if s.cpu == null || s.cpu == "universal" then
+              1
+            else
+              2
+          )
+        +
+          100
+          * (
+            if s.version == o.version then
+              0
+            else if s.version == null then
+              1
+            else
+              2
+          );
 
   # The platform to build for out of a list of candidate platform strings,
   # or null when none of them runs here. Ties keep the earlier candidate.

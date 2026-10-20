@@ -33,7 +33,9 @@ let
     if nixpkgs == null then
       [ ]
     else
-      filter (p: p != "") (filter builtins.isString (builtins.split "\n" (readFile ./fixtures/nixpkgs-lockfiles.txt)));
+      filter (p: p != "") (
+        filter builtins.isString (builtins.split "\n" (readFile ./fixtures/nixpkgs-lockfiles.txt))
+      );
   corpusParses = map (
     rel:
     let
@@ -52,7 +54,9 @@ summarize (
       revision = "09f2f66ac1bb392ae58fd531dcb0acd01c9680be";
       tag = "v3.1.8";
     } (removeAttrs (head basic.sources) [ "specs" ]))
-    (assertEq "basic: gem source remotes" [ "https://rubygems.org" ] (builtins.elemAt basic.sources 1).remotes)
+    (assertEq "basic: gem source remotes" [
+      "https://rubygems.org"
+    ] (builtins.elemAt basic.sources 1).remotes)
 
     # A platform-qualified spec is split into version and platform, keeps its
     # dependency requirements, and carries its checksum from CHECKSUMS.

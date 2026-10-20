@@ -162,7 +162,8 @@ let
     # Inside GEM, GIT or PATH.
     else if src != null then
       if specLine != null then
-        state // {
+        state
+        // {
           source = src // {
             specs = [ (mkSpec (elemAt specLine 0) (elemAt specLine 1)) ] ++ src.specs;
           };
@@ -175,7 +176,8 @@ let
             requirement = elemAt depLine 2;
           };
         in
-        state // {
+        state
+        // {
           source = src // {
             specs = [ (spec // { dependencies = [ dep ] ++ spec.dependencies; }) ] ++ tail src.specs;
           };
@@ -190,19 +192,22 @@ let
         else if key == "remote" && src.type == "gem" then
           # Bundler tries the last-declared remote first, and writes them to
           # the file first-declared first. Prepending keeps Bundler's order.
-          state // {
+          state
+          // {
             source = src // {
               remotes = [ (stripTrailingSlash value) ] ++ src.remotes;
             };
           }
         else if key == "submodules" then
-          state // {
+          state
+          // {
             source = src // {
               submodules = value == "true";
             };
           }
         else
-          state // {
+          state
+          // {
             source = src // {
               ${key} = value;
             };
@@ -212,11 +217,13 @@ let
 
     # The flat sections.
     else if section == "PLATFORMS" && entry != null then
-      state // {
+      state
+      // {
         platforms = state.platforms ++ [ (head entry) ];
       }
     else if section == "DEPENDENCIES" && rootLine != null then
-      state // {
+      state
+      // {
         dependencies = state.dependencies ++ [
           {
             name = elemAt rootLine 0;
@@ -232,7 +239,8 @@ let
       if hash == null then
         state
       else
-        state // {
+        state
+        // {
           checksums = state.checksums // {
             "${elemAt checksumLine 0}-${elemAt checksumLine 1}" = hash;
           };
@@ -242,7 +250,8 @@ let
         raw = head trailer;
         parsed = match "([a-z]+) ([0-9.]+).*" raw;
       in
-      state // {
+      state
+      // {
         rubyVersion = {
           inherit raw;
           engine = if parsed == null then null else elemAt parsed 0;
@@ -250,7 +259,8 @@ let
         };
       }
     else if section == "BUNDLED WITH" && trailer != null then
-      state // {
+      state
+      // {
         bundledWith = head trailer;
       }
     else
@@ -281,4 +291,10 @@ let
     ) source.specs
   ) final.sources;
 in
-(removeAttrs final [ "section" "source" ]) // { inherit specs; }
+(removeAttrs final [
+  "section"
+  "source"
+])
+// {
+  inherit specs;
+}

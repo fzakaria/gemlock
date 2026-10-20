@@ -30,9 +30,7 @@ let
   lines = filter isString (split "\n" content);
 
   # Every :symbol, "string" or 'string' token in a piece of argument text.
-  names =
-    text:
-    map head (filter isList (split "[:\"']([A-Za-z0-9_-]+)[\"']?" text));
+  names = text: map head (filter isList (split "[:\"']([A-Za-z0-9_-]+)[\"']?" text));
 
   unique = foldl' (acc: x: if elem x acc then acc else acc ++ [ x ]) [ ];
 
@@ -51,15 +49,18 @@ let
     if text == "" then
       state
     else if groupBlock != null then
-      state // {
+      state
+      // {
         stack = [ (names (head groupBlock)) ] ++ state.stack;
       }
     else if otherBlock != null then
-      state // {
+      state
+      // {
         stack = [ null ] ++ state.stack;
       }
     else if endLine != null then
-      state // {
+      state
+      // {
         stack = if state.stack == [ ] then [ ] else tail state.stack;
       }
     else if gemLine != null then
@@ -70,9 +71,12 @@ let
         keywordGroups = if keyword == null then [ ] else names (elemAt keyword 1);
         groups = unique (blockGroups ++ keywordGroups);
       in
-      state // {
+      state
+      // {
         groups = state.groups // {
-          ${name} = unique ((state.groups.${name} or [ ]) ++ (if groups == [ ] then [ "default" ] else groups));
+          ${name} = unique (
+            (state.groups.${name} or [ ]) ++ (if groups == [ ] then [ "default" ] else groups)
+          );
         };
       }
     else
