@@ -13,7 +13,8 @@
 
 <p align="center">
   <a href="docs/using.md">Using</a> ·
-  <a href="docs/design.md">Design</a>
+  <a href="docs/design.md">Design</a> ·
+  <a href="docs/comparison.md">Comparison</a>
 </p>
 
 <p align="center">
@@ -63,18 +64,12 @@ update the lock. Re-enter the shell and the new gems are built.
 | `bundle.lock`          | `nix run .#lock`: relock with checksums and platforms       |
 | `bundle.ruby`          | the Ruby in use, picked from `.ruby-version` or the lock    |
 
-## Prior art
+## Compared with the alternatives
 
-What each tool does with the same lock: precompiled `nokogiri`, the
-`sorbet-static` binary and `rack` from git, on x86_64-linux.
-
-| tool                                                             | hashes from            | platform gems                                     | ELF binaries on NixOS   | Ruby at eval time |
-| ---------------------------------------------------------------- | ---------------------- | ------------------------------------------------- | ----------------------- | ----------------- |
-| [bundix](https://github.com/nix-community/bundix) + `bundlerEnv` | generated `gemset.nix` | source builds only (`force_ruby_platform`)        | n/a                     | no                |
-| [ruby-nix](https://github.com/inscapist/ruby-nix)                | its own `gemset.nix`   | yes                                               | not checked             | no                |
-| [gems4nix](https://github.com/omc/gems4nix)                      | `Gemfile.lock`         | yes                                               | unpatched, needs nix-ld | yes, for groups   |
-| [packnix-bundler](https://github.com/tomberek/packnix-bundler)   | `Gemfile.lock`         | wrong variant (string match picks aarch64 on x86) | not checked             | no                |
-| gemlock                                                          | `Gemfile.lock`         | yes, by RubyGems' rules, tested against RubyGems  | `autoPatchelfHook`      | no                |
+bundix, ruby-nix, gems4nix and packnix-bundler each stop short somewhere:
+a second lockfile, source builds for every platform gem, unpatched
+binaries, or import-from-derivation. [docs/comparison.md](docs/comparison.md)
+has the table.
 
 ## Caveats
 
