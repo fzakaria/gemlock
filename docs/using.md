@@ -31,25 +31,9 @@ $ bundle lock --add-checksums --add-platform ruby x86_64-linux aarch64-linux arm
 
 Arguments pass through, so `nix run .#lock -- --update nokogiri` updates one
 gem. The platform list is the `lockPlatforms` argument of `loadBundle`.
-
-### When Bundler lists a platform but locks nothing for it
-
-Bundler fills in a platform's variants only when every gem has a build
-for that platform which the locking Ruby accepts. It checks the single
-best match per gem, so one gem whose precompiled darwin build declares
-`required_ruby_version < 3.4`, as bcrypt_pbkdf 1.1.2 does, makes Bundler
-skip darwin for every gem. There is no warning, `PLATFORMS` still lists
-darwin, and a later relock keeps the gap because the platform looks
-locked already. gemlock then fails on a Mac with "no variant of sqlite3
-runs on arm64-darwin".
-
-After every relock the lock tool checks each platform it asked for. One
-that came back without its variants is removed and added again on its
-own, which sends Bundler through its resolver instead; the resolver takes
-the generic build of the one awkward gem and the precompiled builds of the
-rest, as a native `bundle install` on that platform would. If a gem is
-still missing afterwards the tool names it. The all-or-nothing check is a
-Bundler bug, reported upstream with a fix.
+Afterwards the tool checks that every platform it asked for got its
+variants. Bundler with `--add-checksums` can list a platform and lock
+nothing for it (fix sent upstream); such a platform is re-added.
 
 ## Load the bundle
 
@@ -60,13 +44,9 @@ bundle = gemlock.lib.loadBundle {
 };
 ```
 
-`src` is only a base path. gemlock reads `Gemfile`, `Gemfile.lock` and
-`.ruby-version` from it at evaluation time and copies nothing else into
-the store, so editing an unrelated file in the project does not rebuild a
-gem or an app. The two things that do depend on files under `src` are a
-`PATH` gem, which copies only its own directory, and `extraConfigPaths`
-on `bundle.app`. If you would rather be explicit, any path works,
-including a `lib.fileset.toSource` holding just the two Bundler files.
+Only `Gemfile`, `Gemfile.lock` and `.ruby-version` are read from `src`;
+nothing else under it reaches the store, so unrelated edits rebuild
+nothing.
 
 Everything else is optional:
 

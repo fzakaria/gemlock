@@ -40,16 +40,13 @@ in
 let
   byName = groupBy (s: s.name) lock.specs;
 
-  # Whether PLATFORMS already covers the local platform. Then the missing
-  # variant is not a forgotten --add-platform: Bundler lists a platform
-  # and still writes none of its variants when one gem has no build for it
-  # that the locking Ruby accepts (Bundler::SpecSet#complete_platform).
+  # Whether PLATFORMS already covers the local platform. Then the fix is
+  # not --add-platform: Bundler listed the platform but locked none of its
+  # variants, and the lock tool re-adds it.
   listed = local: builtins.any (p: p != "ruby" && platform.matches local p) lock.platforms;
   skippedHint = ''
-    PLATFORMS lists it, so Bundler skipped the platform while locking. That happens,
-    silently, when one gem's precompiled build for the platform does not accept the
-    Ruby that ran `bundle lock`. Run `nix run .#lock` again: it removes and re-adds
-    the platform, and names the gem if Bundler still skips it. See docs/using.md, "Lock".'';
+    PLATFORMS lists it, so Bundler locked the platform without its variants.
+    Run `nix run .#lock`, which re-adds the platform.'';
 
   choose =
     name: variants:
