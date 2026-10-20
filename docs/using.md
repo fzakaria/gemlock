@@ -23,7 +23,9 @@ to pick. One command does both:
 $ nix run .#lock
 ```
 
-It runs the Bundler of the Ruby your bundle uses, as:
+It runs the Bundler of the Ruby your bundle uses, or nixpkgs' Bundler
+built against that Ruby when its own predates 2.6 (Ruby 3.3 and older),
+as:
 
 ```console
 $ bundle lock --add-checksums --add-platform ruby x86_64-linux aarch64-linux arm64-darwin x86_64-darwin

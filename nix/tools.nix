@@ -9,6 +9,18 @@
   lockPlatforms,
 }:
 let
+  inherit (pkgs) lib;
+
+  # `bundle lock --add-checksums` arrived in Bundler 2.6, which first shipped
+  # with Ruby 3.4. An older Ruby locks with nixpkgs' Bundler built against it
+  # and keeps its own Bundler for everything else.
+  bundledBundlerTooOld = lib.versionOlder (toString ruby.version) "3.4";
+  lockBundle =
+    if bundledBundlerTooOld then
+      "${pkgs.bundler.override { inherit ruby; }}/bin/bundle"
+    else
+      "${wrappedRuby}/bin/bundle";
+
   script =
     name:
     pkgs.writeTextFile {
@@ -18,6 +30,7 @@ let
       text = ''
         #!${ruby}/bin/ruby
         BUNDLE = ${builtins.toJSON "${wrappedRuby}/bin/bundle"}
+        LOCK_BUNDLE = ${builtins.toJSON lockBundle}
         PLATFORMS = ${builtins.toJSON lockPlatforms}
         ${builtins.readFile ./gemlock.rb}
       '';

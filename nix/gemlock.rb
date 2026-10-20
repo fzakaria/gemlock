@@ -1,5 +1,7 @@
 # Shared body of `gemlock-lock` and the `bundle` shim; nix/tools.nix
-# prepends BUNDLE (the real bundle) and PLATFORMS (what to lock for).
+# prepends BUNDLE (the real bundle), LOCK_BUNDLE (the bundle that writes
+# the lock, newer than BUNDLE on a Ruby older than 3.4) and PLATFORMS
+# (what to lock for).
 #
 # As gemlock-lock:   gemlock-lock [bundle lock options]
 #   bundle lock --add-checksums --add-platform <PLATFORMS> <options>
@@ -20,7 +22,7 @@ RUBY_PLATFORM_NAME = "ruby"
 UNIX_OSES = %w[linux darwin].freeze
 
 def bundle_lock(*args)
-  system(BUNDLE, "lock", *args) || exit($?.exitstatus)
+  system(LOCK_BUNDLE, "lock", *args) || exit($?.exitstatus)
 end
 
 # Does one locked variant of a gem run on the platform? The same test the
@@ -66,7 +68,7 @@ def relock(extra = [])
   gaps = incomplete_platforms
   gaps.each do |platform, gems|
     warn "gemlock: Gemfile.lock lists #{platform} but has no #{platform} build of #{gems.join(", ")}; re-adding the platform."
-    system(BUNDLE, "lock", "--remove-platform", platform)
+    system(LOCK_BUNDLE, "lock", "--remove-platform", platform)
     bundle_lock("--add-platform", platform)
   end
 
