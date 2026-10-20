@@ -63,6 +63,19 @@ update the lock. Re-enter the shell and the new gems are built.
 | `bundle.lock`          | `nix run .#lock`: relock with checksums and platforms       |
 | `bundle.ruby`          | the Ruby in use, picked from `.ruby-version` or the lock    |
 
+## Prior art
+
+What each tool does with the same lock: precompiled `nokogiri`, the
+`sorbet-static` binary and `rack` from git, on x86_64-linux.
+
+| tool                                                             | hashes from            | platform gems                                     | ELF binaries on NixOS   | Ruby at eval time |
+| ---------------------------------------------------------------- | ---------------------- | ------------------------------------------------- | ----------------------- | ----------------- |
+| [bundix](https://github.com/nix-community/bundix) + `bundlerEnv` | generated `gemset.nix` | source builds only (`force_ruby_platform`)        | n/a                     | no                |
+| [ruby-nix](https://github.com/inscapist/ruby-nix)                | its own `gemset.nix`   | yes                                               | not checked             | no                |
+| [gems4nix](https://github.com/omc/gems4nix)                      | `Gemfile.lock`         | yes                                               | unpatched, needs nix-ld | yes, for groups   |
+| [packnix-bundler](https://github.com/tomberek/packnix-bundler)   | `Gemfile.lock`         | wrong variant (string match picks aarch64 on x86) | not checked             | no                |
+| gemlock                                                          | `Gemfile.lock`         | yes, by RubyGems' rules, tested against RubyGems  | `autoPatchelfHook`      | no                |
+
 ## Caveats
 
 - The lock has to come from Bundler 2.6 or newer with `--add-checksums`,
