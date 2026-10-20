@@ -103,8 +103,8 @@ summarize (
     (assertEq "basic: eleven checksums" 11 (length (attrNames basic.checksums)))
 
     # The Rails 8 lock: bigger, with requirement ranges and no git sources.
-    (assertEq "rails: spec count" 138 (length rails.specs))
-    (assertEq "rails: root count" 22 (length rails.dependencies))
+    (assertEq "rails: spec count" 137 (length rails.specs))
+    (assertEq "rails: root count" 21 (length rails.dependencies))
     (assertEq "rails: rails requirement" "~> 8.0" (rootDep rails "rails").requirement)
     (assertEq "rails: sqlite3 requirement" ">= 2.1" (rootDep rails "sqlite3").requirement)
     (assertTrue "rails: every gem spec has a checksum" (

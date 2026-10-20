@@ -61,7 +61,7 @@ in
     touch $out
   '';
 
-  # Rails 8: 121 gems, precompiled sqlite3 and nokogiri, source-built
+  # Rails 8: 112 gems, precompiled sqlite3 and nokogiri, source-built
   # bootsnap and msgpack. `rails --version` boots Bundler against the lock.
   rails-env =
     pkgs.runCommand "test-rails-env"
