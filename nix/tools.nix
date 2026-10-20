@@ -23,7 +23,7 @@ let
     if bundledBundlerTooOld then
       "${pkgs.bundler.override { inherit ruby; }}/bin/bundle"
     else
-      "${wrappedRuby}/bin/bundle";
+      "${ruby}/bin/bundle";
 
   script =
     name:
