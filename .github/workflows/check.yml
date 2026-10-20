@@ -1,0 +1,46 @@
+# `nix flake check` on Linux and on macOS: the parser and platform tests
+# evaluate the same everywhere, but the build tests are the ones that prove
+# a precompiled darwin gem is picked and runs on an Apple Silicon host.
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Lock is current
+        run: |
+          nix flake lock
+          git diff --exit-code flake.lock
+
+      - name: Checks
+        run: nix flake check -L
+
+      # The template as a user would get it: a fresh project, locked with
+      # the tool, in a shell with the gems built.
+      - name: Template
+        run: |
+          mkdir -p /tmp/t && cd /tmp/t
+          nix flake init -t "$GITHUB_WORKSPACE"
+          sed -i.bak "s#github:fzakaria/gemlock#path:$GITHUB_WORKSPACE#" flake.nix && rm -f flake.nix.bak
+          git init -q && git add .
+          nix run .#lock
+          git add Gemfile.lock
+          nix develop -c ruby -rnokogiri -e 'puts Nokogiri::VERSION'
