@@ -42,7 +42,7 @@ let
 
   # Whether PLATFORMS already covers the local platform. Then the fix is
   # not --add-platform: Bundler listed the platform but locked none of its
-  # variants, and the lock tool re-adds it.
+  # variants (https://github.com/ruby/rubygems/pull/9960), and the lock tool re-adds it.
   listed = local: builtins.any (p: p != "ruby" && platform.matches local p) lock.platforms;
   skippedHint = ''
     PLATFORMS lists it, so Bundler locked the platform without its variants.

@@ -14,8 +14,7 @@ gem "solid_cable"
 gem "bootsnap", require: false
 # kamal is in a stock `rails new` Gemfile but is left out here: its
 # bcrypt_pbkdf dependency ships darwin builds that refuse Ruby 3.4, which
-# makes Bundler skip darwin for every gem when locking from Linux. See
-# docs/using.md, "Lock".
+# trips https://github.com/ruby/rubygems/pull/9960 when locking from Linux.
 gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 group :development, :test do

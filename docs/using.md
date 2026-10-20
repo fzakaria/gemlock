@@ -33,7 +33,7 @@ Arguments pass through, so `nix run .#lock -- --update nokogiri` updates one
 gem. The platform list is the `lockPlatforms` argument of `loadBundle`.
 Afterwards the tool checks that every platform it asked for got its
 variants. Bundler with `--add-checksums` can list a platform and lock
-nothing for it (fix sent upstream); such a platform is re-added.
+nothing for it ([rubygems#9960](https://github.com/ruby/rubygems/pull/9960)); such a platform is re-added.
 
 ## Load the bundle
 

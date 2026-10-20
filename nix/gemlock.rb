@@ -59,11 +59,10 @@ end
 def relock(extra = [])
   bundle_lock("--add-checksums", "--add-platform", *PLATFORMS, *extra)
 
-  # A platform that came back without its variants is removed and added
-  # again on its own. Bundler then resolves it through its resolver, which
-  # falls back to a gem's generic build when the precompiled one rejects
-  # this Ruby, instead of the all-or-nothing platform completion that
-  # produced the gap.
+  # `bundle lock --add-checksums --add-platform X` resolves before X is
+  # applied, so X can be listed with no specs (https://github.com/ruby/rubygems/pull/9960).
+  # Removing and re-adding X on its own resolves it properly. Drop this
+  # once the Bundler in use has the fix.
   gaps = incomplete_platforms
   gaps.each do |platform, gems|
     warn "gemlock: Gemfile.lock lists #{platform} but has no #{platform} build of #{gems.join(", ")}; re-adding the platform."
