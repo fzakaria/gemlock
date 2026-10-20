@@ -1,0 +1,137 @@
+{
+  "x86_64-linux": {
+    "parsed": [
+      "x86_64",
+      "linux",
+      null
+    ],
+    "matches": [
+      "ruby",
+      "x86_64-linux",
+      "x86_64-linux-gnu"
+    ]
+  },
+  "aarch64-linux": {
+    "parsed": [
+      "aarch64",
+      "linux",
+      null
+    ],
+    "matches": [
+      "ruby",
+      "aarch64-linux",
+      "aarch64-linux-gnu"
+    ]
+  },
+  "x86_64-linux-musl": {
+    "parsed": [
+      "x86_64",
+      "linux",
+      "musl"
+    ],
+    "matches": [
+      "ruby",
+      "x86_64-linux",
+      "x86_64-linux-musl"
+    ]
+  },
+  "aarch64-linux-musl": {
+    "parsed": [
+      "aarch64",
+      "linux",
+      "musl"
+    ],
+    "matches": [
+      "ruby",
+      "aarch64-linux",
+      "aarch64-linux-musl"
+    ]
+  },
+  "arm64-darwin23": {
+    "parsed": [
+      "arm64",
+      "darwin",
+      "23"
+    ],
+    "matches": [
+      "ruby",
+      "arm64-darwin",
+      "arm64-darwin-23",
+      "universal-darwin"
+    ]
+  },
+  "arm64-darwin24": {
+    "parsed": [
+      "arm64",
+      "darwin",
+      "24"
+    ],
+    "matches": [
+      "ruby",
+      "arm64-darwin",
+      "universal-darwin"
+    ]
+  },
+  "x86_64-darwin22": {
+    "parsed": [
+      "x86_64",
+      "darwin",
+      "22"
+    ],
+    "matches": [
+      "ruby",
+      "x86_64-darwin",
+      "universal-darwin",
+      "universal-darwin-22"
+    ]
+  },
+  "x86_64-darwin23": {
+    "parsed": [
+      "x86_64",
+      "darwin",
+      "23"
+    ],
+    "matches": [
+      "ruby",
+      "x86_64-darwin",
+      "universal-darwin"
+    ]
+  },
+  "armv7l-linux-eabihf": {
+    "parsed": [
+      "armv7l",
+      "linux",
+      "eabihf"
+    ],
+    "matches": [
+      "ruby",
+      "arm-linux",
+      "arm-linux-gnueabihf",
+      "armv7l-linux"
+    ]
+  },
+  "x86_64-freebsd14": {
+    "parsed": [
+      "x86_64",
+      "freebsd",
+      "14"
+    ],
+    "matches": [
+      "ruby",
+      "x86_64-freebsd"
+    ]
+  },
+  "riscv64-linux": {
+    "parsed": [
+      "riscv64",
+      "linux",
+      null
+    ],
+    "matches": [
+      "ruby",
+      "riscv64-linux",
+      "riscv64-linux-gnu"
+    ]
+  },
+  "_rubygems": "3.7.2"
+}
