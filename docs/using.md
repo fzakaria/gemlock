@@ -41,6 +41,14 @@ bundle = gemlock.lib.loadBundle {
 };
 ```
 
+`src` is only a base path. gemlock reads `Gemfile`, `Gemfile.lock` and
+`.ruby-version` from it at evaluation time and copies nothing else into
+the store, so editing an unrelated file in the project does not rebuild a
+gem or an app. The two things that do depend on files under `src` are a
+`PATH` gem, which copies only its own directory, and `extraConfigPaths`
+on `bundle.app`. If you would rather be explicit, any path works,
+including a `lib.fileset.toSource` holding just the two Bundler files.
+
 Everything else is optional:
 
 | argument        | default                                               | meaning                                                           |
