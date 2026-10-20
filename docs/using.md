@@ -5,7 +5,7 @@
 ```nix
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.gemlock.url = "github:fzakaria/gemlock";
+  inputs.gemlock.url = "github:fzakaria/gemlock.nix";
   inputs.gemlock.inputs.nixpkgs.follows = "nixpkgs";
 }
 ```

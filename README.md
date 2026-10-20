@@ -2,7 +2,7 @@
   <img src="docs/img/gemlock.svg" width="96" height="96" alt="" />
 </p>
 
-<h1 align="center">gemlock</h1>
+<h1 align="center">gemlock.nix</h1>
 
 <p align="center">
   <b>Ruby gems for Nix, straight from <code>Gemfile.lock</code>.</b><br />
@@ -18,13 +18,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/fzakaria/gemlock/actions/workflows/check.yml"><img src="https://github.com/fzakaria/gemlock/actions/workflows/check.yml/badge.svg?branch=main" alt="check" /></a>
+  <a href="https://github.com/fzakaria/gemlock.nix/actions/workflows/check.yml"><img src="https://github.com/fzakaria/gemlock.nix/actions/workflows/check.yml/badge.svg?branch=main" alt="check" /></a>
 </p>
 
 ```nix
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.gemlock.url = "github:fzakaria/gemlock";
+  inputs.gemlock.url = "github:fzakaria/gemlock.nix";
   inputs.gemlock.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { nixpkgs, gemlock, ... }:
@@ -42,7 +42,7 @@
 ## Quickstart
 
 ```console
-$ nix flake init -t github:fzakaria/gemlock
+$ nix flake init -t github:fzakaria/gemlock.nix
 # writes Gemfile.lock with checksums, for every platform
 $ nix run .#lock
 # ruby, bundle and every locked gem

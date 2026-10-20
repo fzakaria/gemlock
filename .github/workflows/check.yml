@@ -39,7 +39,7 @@ jobs:
         run: |
           mkdir -p /tmp/t && cd /tmp/t
           nix flake init -t "$GITHUB_WORKSPACE"
-          sed -i.bak "s#github:fzakaria/gemlock#path:$GITHUB_WORKSPACE#" flake.nix && rm -f flake.nix.bak
+          sed -i.bak "s#github:fzakaria/gemlock.nix#path:$GITHUB_WORKSPACE#" flake.nix && rm -f flake.nix.bak
           git init -q && git add .
           nix run .#lock
           git add Gemfile.lock

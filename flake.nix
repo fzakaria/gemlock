@@ -1,5 +1,5 @@
 {
-  description = "gemlock: Ruby gems for Nix from Gemfile.lock alone";
+  description = "gemlock.nix: Ruby gems for Nix from Gemfile.lock alone";
 
   # nixpkgs is the only input. The formatter and the test tooling come out
   # of it too, so adding gemlock to a project adds one node to its lock.
