@@ -5,7 +5,7 @@
 #
 #   bundle.gems        one derivation per locked gem, as an overridable scope
 #   bundle.env         the gems linked into one GEM_HOME, plus a wrapped ruby
-#   bundle.shell { }   a dev shell where bundle exec and rails just work
+#   bundle.shell { }   a dev shell with ruby, bundle and every locked gem
 #   bundle.app { }     a package exposing chosen gem executables
 #   bundle.lock        `nix run .#lock`: relock with checksums and platforms
 #   bundle.ruby        the Ruby everything above is built against

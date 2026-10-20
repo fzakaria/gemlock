@@ -4,4 +4,3 @@
   workflow, overriding a gem, packaging an app
 - [Design](./design.md): what the lockfile already knows, how a platform
   is chosen, what is pure and what is not
-- [Caveats](./caveats.md): what to know before depending on this

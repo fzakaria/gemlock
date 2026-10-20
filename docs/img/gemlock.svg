@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="gemlock">
+  <!-- crown -->
+  <polygon points="34,22 94,22 116,54 12,54" fill="#c81e3c"/>
+  <polygon points="50,22 78,22 86,54 42,54" fill="#ee4f68"/>
+  <polygon points="34,22 50,22 42,54 12,54" fill="#a8172f"/>
+  <polygon points="78,22 94,22 116,54 86,54" fill="#a8172f"/>
+  <!-- pavilion -->
+  <polygon points="42,54 86,54 64,112" fill="#c81e3c"/>
+  <polygon points="12,54 42,54 64,112" fill="#8c1226"/>
+  <polygon points="86,54 116,54 64,112" fill="#8c1226"/>
+  <!-- girdle line -->
+  <line x1="12" y1="54" x2="116" y2="54" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1.5"/>
+  <!-- highlight -->
+  <polygon points="54,28 74,28 72,36 56,36" fill="#ffffff" fill-opacity="0.4"/>
+</svg>

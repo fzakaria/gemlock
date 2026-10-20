@@ -1,7 +1,24 @@
-# gemlock
+<p align="center">
+  <img src="docs/img/gemlock.svg" width="96" height="96" alt="" />
+</p>
 
-Ruby gems for Nix, from `Gemfile.lock` alone. No bundix, no gemset.nix, no
-import-from-derivation.
+<h1 align="center">gemlock</h1>
+
+<p align="center">
+  <b>Ruby gems for Nix, straight from <code>Gemfile.lock</code>.</b><br />
+  Bundler already writes every checksum Nix needs. gemlock reads them and
+  builds the gems, a dev shell and your app, with nothing to generate and
+  no import-from-derivation.
+</p>
+
+<p align="center">
+  <a href="docs/using.md">Using</a> ·
+  <a href="docs/design.md">Design</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/fzakaria/gemlock/actions/workflows/check.yml"><img src="https://github.com/fzakaria/gemlock/actions/workflows/check.yml/badge.svg?branch=main" alt="check" /></a>
+</p>
 
 ```nix
 {
@@ -21,39 +38,14 @@ import-from-derivation.
 }
 ```
 
-**Documentation:** [How to use it](./docs/using.md) ·
-[Design](./docs/design.md) · [Caveats](./docs/caveats.md)
-
-## Status
-
-![check workflow](https://github.com/fzakaria/gemlock/actions/workflows/check.yml/badge.svg?branch=main)
-
-Works on the two examples in this repository, checked on every push on
-Linux and macOS: a small project with a precompiled `nokogiri`, the
-`sorbet-static` binary and a git-sourced `rack`, and a Rails 8 lock with
-121 gems. Not yet used in anger beyond that.
-
-## Why
-
-Bundler 2.6 writes a `CHECKSUMS` section into `Gemfile.lock`: a sha256 for
-every gem. A `GIT` section always carries the full commit. That is every
-hash Nix needs, so the lockfile can be read directly and the bundix step,
-with its separately generated and separately stale `gemset.nix`, goes away.
-
-Reading the lock directly also ends the long-standing trouble with
-platform-specific gems. The lock lists every variant Bundler resolved
-(`nokogiri (1.19.4-arm64-darwin)`, `nokogiri (1.19.4-x86_64-linux-gnu)`,
-...) each with its own checksum, and gemlock picks the one for the host by
-the same rules RubyGems and Bundler use. Precompiled gems are preferred
-over source builds, and on Linux their binaries are patched to run from
-the store.
-
 ## Quickstart
 
 ```console
 $ nix flake init -t github:fzakaria/gemlock
-$ nix run .#lock          # writes Gemfile.lock with checksums, for every platform
-$ nix develop             # ruby, bundle and every locked gem
+# writes Gemfile.lock with checksums, for every platform
+$ nix run .#lock
+# ruby, bundle and every locked gem
+$ nix develop
 $ bundle exec rake
 ```
 
@@ -70,6 +62,20 @@ update the lock. Re-enter the shell and the new gems are built.
 | `bundle.app { exes; }` | a package with the named gem executables in `bin/`          |
 | `bundle.lock`          | `nix run .#lock`: relock with checksums and platforms       |
 | `bundle.ruby`          | the Ruby in use, picked from `.ruby-version` or the lock    |
+
+## Caveats
+
+- The lock has to come from Bundler 2.6 or newer with `--add-checksums`,
+  which is what `nix run .#lock` does.
+- Git gems are fetched at evaluation time. The lock records a commit but
+  no content hash, so pass `sources` to pin one with a hash.
+- A native extension built from source still needs its libraries. nixpkgs'
+  `defaultGemConfig` covers the common ones; anything else is an
+  `overrides` entry.
+- Gemfile groups are read from `group` blocks and `group:` keywords, not
+  from `gemspec`, `eval_gemfile` or conditionals. Pass `gemGroups` to be
+  exact.
+- Bundler plugins, JRuby and Windows are out of scope.
 
 ## License
 
