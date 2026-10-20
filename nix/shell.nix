@@ -8,7 +8,6 @@
 # store are turned into lock-only ones, and the rest pass straight through.
 {
   pkgs,
-  ruby,
   env,
   tools,
   hasLock,

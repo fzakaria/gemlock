@@ -120,7 +120,6 @@ let
         tools
         hasLock
         ;
-      ruby = ruby';
     };
 
     # A narrower bundle for an application: the same project with a
