@@ -32,6 +32,25 @@ $ bundle lock --add-checksums --add-platform ruby x86_64-linux aarch64-linux arm
 Arguments pass through, so `nix run .#lock -- --update nokogiri` updates one
 gem. The platform list is the `lockPlatforms` argument of `loadBundle`.
 
+### When Bundler lists a platform but locks nothing for it
+
+Bundler fills in a platform's variants only when every gem has a build
+for that platform which the locking Ruby accepts. It checks the single
+best match per gem, so one gem whose precompiled darwin build declares
+`required_ruby_version < 3.4`, as bcrypt_pbkdf 1.1.2 does, makes Bundler
+skip darwin for every gem. There is no warning, `PLATFORMS` still lists
+darwin, and a later relock keeps the gap because the platform looks
+locked already. gemlock then fails on a Mac with "no variant of sqlite3
+runs on arm64-darwin".
+
+After every relock the lock tool checks each platform it asked for. One
+that came back without its variants is removed and added again on its
+own, which sends Bundler through its resolver instead; the resolver takes
+the generic build of the one awkward gem and the precompiled builds of the
+rest, as a native `bundle install` on that platform would. If a gem is
+still missing afterwards the tool names it. The all-or-nothing check is a
+Bundler bug, reported upstream with a fix.
+
 ## Load the bundle
 
 ```nix
