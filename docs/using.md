@@ -57,7 +57,7 @@ Everything else is optional:
 | `gemfile`       | `src + "/Gemfile"`                                    |                                                                   |
 | `lockfile`      | `src + "/Gemfile.lock"`                               |                                                                   |
 | `ruby`          | from `.ruby-version`, then the lock, then `pkgs.ruby` | the interpreter every gem is built against                        |
-| `groups`        | `null`, meaning every gem                             | Bundler groups to include                                         |
+| `groups`        | `null`, meaning every gem                             | Bundler groups to include; the rest become `BUNDLE_WITHOUT`       |
 | `gemGroups`     | read from the Gemfile                                 | `{ rspec = [ "test" ]; }` when the Gemfile is too dynamic to read |
 | `overrides`     | `final: prev: { }`                                    | an overlay on the gem scope                                       |
 | `sources`       | `{ }`                                                 | `{ <gem> = src; }` replacing a git or path gem's source           |

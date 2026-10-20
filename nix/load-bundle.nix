@@ -66,9 +66,10 @@ let
     else
       { };
 
-  # Every group the Gemfile mentions, so an app can tell Bundler which ones
-  # it was built without.
+  # Every group the Gemfile mentions, and the ones this bundle leaves out,
+  # which the env and app pass to Bundler as BUNDLE_WITHOUT.
   allGroups = lib.unique (lib.concatLists (lib.attrValues groupsByGem) ++ [ "default" ]);
+  without = if groups == null then [ ] else lib.subtractLists groups allGroups;
 
   ruby' = import ./ruby.nix {
     inherit pkgs src;
@@ -95,7 +96,12 @@ let
   };
 
   env = import ./env.nix {
-    inherit pkgs name gems;
+    inherit
+      pkgs
+      name
+      gems
+      without
+      ;
     ruby = ruby';
     lock = parsedLock;
   };
@@ -138,7 +144,7 @@ let
         inherit pkgs gemfile lockfile;
         env = narrowed.env;
         ruby = ruby';
-        without = lib.subtractLists groups allGroups;
+        inherit (narrowed.env) without;
       } (removeAttrs appArgs [ "groups" ]);
   };
 in

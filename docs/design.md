@@ -59,10 +59,13 @@ overlay.
 
 The shell sets `GEM_HOME` and `GEM_PATH` and leaves Bundler to find the
 project's own `Gemfile`, unfrozen, so `bundle lock` can write. An app
-pins `BUNDLE_GEMFILE` to a store copy, freezes, and sets
-`BUNDLE_WITHOUT`. `BUNDLE_VERSION=system` is set everywhere; without it
-Bundler tries to install the `BUNDLED WITH` version into the store. The
-`bundle` shim turns `install`, `add`, `remove` and `update` into relocks.
+pins `BUNDLE_GEMFILE` to a store copy and freezes. An env built for some
+of the groups exports `BUNDLE_WITHOUT` for the rest, from its setup hook
+and its wrapped Ruby: the lock still lists those gems, and `bundler/setup`
+treats a locked gem it cannot find as an error unless its group is named
+there. `BUNDLE_VERSION=system` is set everywhere; without it Bundler
+tries to install the `BUNDLED WITH` version into the store. The `bundle`
+shim turns `install`, `add`, `remove` and `update` into relocks.
 
 ## Purity
 

@@ -55,6 +55,33 @@ in
         touch $out
       '';
 
+  # An env built for a subset of the groups still has to boot through
+  # bundler/setup, whose lock lists the gems left out. The env tells Bundler
+  # about them with BUNDLE_WITHOUT, so sorbet-static is neither built nor
+  # looked for.
+  basic-env-without-development =
+    let
+      narrowed = self.lib.loadBundle {
+        inherit pkgs;
+        src = ../examples/basic;
+        groups = [ "default" ];
+      };
+    in
+    pkgs.runCommand "test-basic-env-without-development"
+      {
+        nativeBuildInputs = [
+          narrowed.env
+          narrowed.wrappedRuby
+        ];
+      }
+      ''
+        cp -r ${../examples/basic} project
+        cd project
+        ! ls "$GEM_HOME"/gems | grep -q sorbet-static
+        ruby -e 'require "bundler/setup"; require "rack"; puts Rack::RELEASE' | grep -x 3.1.8
+        touch $out
+      '';
+
   # A gem executable packaged on its own.
   rake-app = pkgs.runCommand "test-rake-app" { } ''
     ${self.packages.${system}.rake}/bin/rake --version | grep 13.4.2
