@@ -103,7 +103,6 @@ let
   tools = import ./tools.nix {
     inherit pkgs lockPlatforms;
     ruby = ruby';
-    inherit (env) wrappedRuby;
   };
 
   bundle = {

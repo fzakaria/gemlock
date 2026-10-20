@@ -80,5 +80,20 @@ in
         touch $out
       '';
 
+  # The lock tool is what adds checksums, so it has to evaluate against a
+  # lock that has none, which is a lock no gem can be evaluated from.
+  lock-without-checksums =
+    pkgs.runCommand "test-lock-without-checksums"
+      {
+        program =
+          (self.lib.loadBundle {
+            inherit pkgs;
+            src = ../tests/fixtures/unchecksummed;
+          }).lock.program;
+      }
+      ''
+        echo "$program" > $out
+      '';
+
   formatting = (import ./formatter.nix { inherit pkgs; }).check self;
 }

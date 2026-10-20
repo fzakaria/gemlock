@@ -2,10 +2,14 @@
 # Gemfile.lock Nix can build from, and the `bundle` shim the dev shell puts
 # ahead of Bundler's own. Both are nix/gemlock.rb, run by the project's
 # Ruby, and differ only in the name they are called by.
+#
+# Neither depends on the gem environment. The lock tool has to run on a
+# lock that has no checksums yet, which is exactly the lock the gems cannot
+# be evaluated from; in the dev shell the environment's GEM_PATH is already
+# exported, so the shim's pass-through finds the gems anyway.
 {
   pkgs,
   ruby,
-  wrappedRuby,
   lockPlatforms,
 }:
 let
@@ -29,7 +33,7 @@ let
       destination = "/bin/${name}";
       text = ''
         #!${ruby}/bin/ruby
-        BUNDLE = ${builtins.toJSON "${wrappedRuby}/bin/bundle"}
+        BUNDLE = ${builtins.toJSON "${ruby}/bin/bundle"}
         LOCK_BUNDLE = ${builtins.toJSON lockBundle}
         PLATFORMS = ${builtins.toJSON lockPlatforms}
         ${builtins.readFile ./gemlock.rb}
