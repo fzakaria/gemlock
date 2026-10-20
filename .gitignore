@@ -1,0 +1,7 @@
+# Build outputs and direnv state.
+result
+result-*
+.direnv/
+# Bundler scratch that `nix run .#lock` or a shell may leave behind.
+.bundle/
+vendor/bundle/

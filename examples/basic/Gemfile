@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+gem "nokogiri"
+gem "rake"
+gem "sorbet-static", group: :development
+gem "rack", git: "https://github.com/rack/rack", tag: "v3.1.8"
